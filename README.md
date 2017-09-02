@@ -15,9 +15,12 @@ Modified for [cygwin-portable-installer](https://github.com/vegardit/cygwin-port
 
 Append to your .bashrc
 
-### Configuration:
+Can be done in the following way:
+```
+wget -O- https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/re-use-ssh-agent.sh >> /path/to/your/.bashrc
+```
 
-Open [re-use-ssh-agent.sh](https://github.com/zhubanRuban/cygwin-extras/blob/master/re-use-ssh-agent.sh):
+### Configuration:
 
 **SSH_AUTH_PATH**
 - a path where SSH agent will store its tmp files, moved to separate folder in $HOME for convenience
