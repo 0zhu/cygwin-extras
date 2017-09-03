@@ -41,3 +41,20 @@ wget -O- https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/re-u
 ### How to use:
 
 Replace contents from your current ConEmu.xml with [Custom ConEmu config](https://github.com/zhubanRuban/cygwin-extras/blob/master/ConEmu.xml)
+
+## [Custom .bashrc](https://github.com/zhubanRuban/cygwin-extras/blob/master/bashrc_custom.sh)
+
+- tiny and functional command prompt:
+
+`user@host path $` - also automatically sets host as terminal title
+
+- aliases for ls and grep
+
+### How to use:
+
+Append to your .bashrc
+
+Can be done in the following way:
+```
+wget -O- https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/bashrc_custom.sh >> /path/to/your/.bashrc
+```
