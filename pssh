@@ -1,0 +1,49 @@
+#!/bin/bash
+#by zhu
+
+if [ "$1" == "--help" ]; then
+echo -e "\e[0;37mby zhu\n
+Description:\e[0m
+\tThis is bash version of pssh (parallel-ssh) utility
+\e[0;37mUsage:\e[0m
+\t$0 /path/to/hostsfile \"command(s)\"
+\e[0;37mNote:\e[0m
+\t1) multiple commands should be separated by ;
+\t2) in case a command contains \" sign, it must be preceded by \\ sign, for instance, \e[1;33m\"echo \"test\"; date\"\e[0m becomes \e[1;33m\"echo \\\"test\\\"; date\"\e[0m
+\e[0;37mSupported hosts file format:\e[0m
+\t\e[1;33musername@host:port\e[0m
+\t*where host is a hostname or an IP address
+\t*if your server is using standard SSH port (22), :port can be omitted:
+\t\e[1;33musername@host\e[0m
+\e[0;37mChangelog:\e[0m
+\t25-Jun-2016 First release\n"
+exit 0
+fi
+
+hostsfile=$1
+psshcommand=$2
+
+if [ -f "$hostsfile" ]; then
+for hostrecord in $(cat "$hostsfile")
+do
+hozd=$(echo $hostrecord|cut -d\@ -f2|cut -d\: -f1)
+hozdline=$(echo $hostrecord|cut -d\: -f1)
+sshporttest=$(echo $hostrecord|grep ":")
+if [ "$sshporttest" == "" ]; then
+sshport="22"
+else
+sshport=$(echo $hostrecord|cut -d\: -f2)
+fi
+echo -e "\e[0;36m$hozd \e[0msays:"
+ssh -p $sshport $hozdline "$psshcommand"
+if [ $? -eq 0 ]; then
+echo -e "\e[1;32mSUCCESS\e[0m"
+else
+echo -e "\e[1;31mFAIL\e[0m"
+fi
+done
+exit 0
+else
+echo -e "$hostsfile \e[1;31mfile doesn't exist\e[0m"
+exit 1
+fi

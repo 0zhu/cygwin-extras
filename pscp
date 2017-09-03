@@ -1,0 +1,47 @@
+#!/bin/bash
+#by zhu
+
+if [ "$1" == "--help" ]; then
+echo -e "\e[0;37mby zhu\n
+Description:\e[0m
+\tThis is bash version of pscp (parallel-scp) utility
+\e[0;37mUsage:\e[0m
+\t$0 /path/to/hostsfile /local/path /remote/path
+\e[0;37mSupported hosts file format:\e[0m
+\t\e[1;33musername@host:port\e[0m
+\t*where host is a hostname or an IP address
+\t*if your server is using standard SSH port (22), :port can be omitted:
+\t\e[1;33musername@host\e[0m
+\e[0;37mChangelog:\e[0m
+\t25-Jun-2016 First release\n"
+exit 0
+fi
+
+hostsfile=$1
+localpath=$2
+remotpath=$3
+
+if [ -f "$hostsfile" ]; then
+for hostrecord in $(cat "$hostsfile")
+do
+hozd=$(echo $hostrecord|cut -d\@ -f2|cut -d\: -f1)
+hozdline=$(echo $hostrecord|cut -d\: -f1)
+sshporttest=$(echo $hostrecord|grep ":")
+if [ "$sshporttest" == "" ]; then
+sshport="22"
+else
+sshport=$(echo $hostrecord|cut -d\: -f2)
+fi
+echo -e "\e[0;36m$hozd \e[0msays:"
+scp -P $sshport $localpath $hozdline:$remotpath
+if [ $? -eq 0 ]; then
+echo -e "\e[1;32mSUCCESS\e[0m"
+else
+echo -e "\e[1;31mFAIL\e[0m"
+fi
+done
+exit 0
+else
+echo -e "$hostsfile \e[1;31mfile doesn't exist\e[0m"
+exit 1
+fi
