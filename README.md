@@ -1,6 +1,26 @@
 # cygwin-extras
 Enhancements for Cygwin-like environments
 
+## [PSSH (ParallelSSH)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pssh)
+
+Parallel SSH tool written in bash, spacially for CygWin
+
+### Installation
+```
+wget -O /usr/local/bin/pssh https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/pssh
+chmod +x /usr/local/bin/apt-pssh
+```
+
+## [PSCP (ParallelSCP)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pscp)
+
+Parallel SCP tool written in bash, spacially for CygWin
+
+### Installation
+```
+wget -O /usr/local/bin/pscp https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/pscp
+chmod +x /usr/local/bin/apt-pscp
+```
+
 ## [Re-use SSH agent](https://github.com/zhubanRuban/cygwin-extras/blob/master/re-use-ssh-agent.sh)
 
 By default, Cygwin asks for SSH key password on every SSH login
