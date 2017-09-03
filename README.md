@@ -29,3 +29,15 @@ wget -O- https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/re-u
 **SSH_AUTH_KEY**
 - a path to your SSH key, modify according for this scheme to work
 - *default*: ~/.ssh/id_dsa
+
+## [Custom ConEmu config](https://github.com/zhubanRuban/cygwin-extras/blob/master/ConEmu.xml)
+
+**Should be used only with [this](https://github.com/vegardit/cygwin-portable-installer) build**
+
+- xterm color scheme
+- yakuake-like behavior
+- tabs formatting for easier tab management
+
+### How to use:
+
+Replace contents from your current ConEmu.xml with [Custom ConEmu config](https://github.com/zhubanRuban/cygwin-extras/blob/master/ConEmu.xml)
