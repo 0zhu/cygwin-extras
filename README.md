@@ -3,7 +3,7 @@ Enhancements for Cygwin-like environments
 
 ## [PSSH (ParallelSSH)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pssh)
 
-Parallel SSH tool written in bash, spacially for CygWin
+Parallel SSH tool written in bash, specially for CygWin
 
 ### Installation
 ```
@@ -13,7 +13,7 @@ chmod +x /usr/local/bin/apt-pssh
 
 ## [PSCP (ParallelSCP)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pscp)
 
-Parallel SCP tool written in bash, spacially for CygWin
+Parallel SCP tool written in bash, specially for CygWin
 
 ### Installation
 ```
