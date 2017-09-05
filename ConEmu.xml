@@ -1,3 +1,7 @@
+<!--
+	Custom ConEmu config specially for CygWin+ConEmu portable build:
+	https://github.com/zhubanRuban/cygwin-extras
+-->
 <?xml version="1.0" encoding="utf-8"?>
 <key name="Software">
 	<key name="ConEmu">
@@ -44,7 +48,7 @@
 			<value name="FontUseUnits" type="hex" data="01"/>
 			<value name="FontSize" type="ulong" data="14"/>
 			<value name="StatusFontHeight" type="long" data="12"/>
-			<key name="HotKeys" modified="2017-09-03 15:08:12" build="170819">
+			<key name="HotKeys">
 				<value name="MinimizeRestore" type="dword" data="000011c0"/>
 			</key>
 			<key name="Tasks">
