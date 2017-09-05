@@ -31,6 +31,7 @@
 			<value name="TabFontFace" type="string" data="Arial Black"/>
 			<value name="TabConsole" type="string" data="%m---m%s%m---m"/>
 			<value name="TabModifiedSuffix" type="string" data="*"/>
+			<value name="TabDblClick" type="ulong" data="3"/>
 			<value name="AlphaValue" type="hex" data="dd"/>
 			<value name="StatusBar.Show" type="hex" data="00"/>
 			<value name="CTS.IntelligentExceptions" type="string" data="far"/>
