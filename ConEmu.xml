@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Custom ConEmu config specially for CygWin+ConEmu portable build:
 	https://github.com/zhubanRuban/cygwin-extras
 -->
-<?xml version="1.0" encoding="utf-8"?>
 <key name="Software">
 	<key name="ConEmu">
 		<key name=".Vanilla">
