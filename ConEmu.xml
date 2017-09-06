@@ -25,7 +25,6 @@
 			<value name="ColorTable15" type="dword" data="00ffffff"/>
 			<value name="WindowMode" type="dword" data="00000520"/>
 			<value name="ShowScrollbar" type="hex" data="01"/>
-			<value name="AlwaysOnTop" type="hex" data="01"/>
 			<value name="QuakeStyle" type="hex" data="01"/>
 			<value name="QuakeAnimation" type="ulong" data="100"/>
 			<value name="Min2Tray" type="hex" data="01"/>
