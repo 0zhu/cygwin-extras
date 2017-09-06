@@ -47,6 +47,8 @@
 			<value name="FontUseUnits" type="hex" data="01"/>
 			<value name="FontSize" type="ulong" data="14"/>
 			<value name="StatusFontHeight" type="long" data="12"/>
+			<value name="TabFontHeight" type="long" data="12"/>
+			<value name="DefaultBufferHeight" type="long" data="9999"/>
 			<key name="HotKeys">
 				<value name="MinimizeRestore" type="dword" data="000011c0"/>
 			</key>
