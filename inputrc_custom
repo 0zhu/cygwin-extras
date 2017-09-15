@@ -1,0 +1,7 @@
+
+################################################
+# Ctrl+< and Ctrl+> move cursor by words       #
+# https://github.com/zhubanRuban/cygwin-extras #
+"\e[1;5C": forward-word   # ctrl + right
+"\e[1;5D": backward-word  # ctrl + left
+################################################
