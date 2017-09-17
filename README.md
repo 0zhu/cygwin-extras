@@ -8,7 +8,7 @@ Parallel SSH tool written in bash, specially for CygWin
 ### Installation
 ```
 wget -O /usr/local/bin/pssh https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/pssh
-chmod +x /usr/local/bin/apt-pssh
+chmod +x /usr/local/bin/pssh
 ```
 
 ## [PSCP (ParallelSCP)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pscp)
@@ -18,7 +18,7 @@ Parallel SCP tool written in bash, specially for CygWin
 ### Installation
 ```
 wget -O /usr/local/bin/pscp https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/pscp
-chmod +x /usr/local/bin/apt-pscp
+chmod +x /usr/local/bin/pscp
 ```
 
 ## [Re-use SSH agent](https://github.com/zhubanRuban/cygwin-extras/blob/master/re-use-ssh-agent.sh)
