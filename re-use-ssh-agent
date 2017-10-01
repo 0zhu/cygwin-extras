@@ -5,14 +5,16 @@
 # Based on http://www.electricmonk.nl/log/2012/04/24/re-use-existing-ssh-agent-cygwin-et-al/         #
 # Modified for CygWin+ConEmu portable build: https://github.com/zhubanRuban/ConCygSys                #
 
-export SSH_AUTH_PATH=~/.agentssh
-export SSH_AUTH_SOCK=$SSH_AUTH_PATH/.ssh-socket
+if command -v ssh-add >/dev/null 2>&1; then
+  export SSH_AUTH_PATH=~/.agentssh
+  export SSH_AUTH_SOCK=$SSH_AUTH_PATH/.ssh-socket
   if ! ssh-add -l >/dev/null 2>&1; then
-  mkdir -p $SSH_AUTH_PATH
-  rm -rf $SSH_AUTH_SOCK
-  ssh-agent -a $SSH_AUTH_SOCK >| $SSH_AUTH_PATH/.ssh-script
-  source $SSH_AUTH_PATH/.ssh-script
-  echo $SSH_AGENT_PID >| $SSH_AUTH_PATH/.ssh-agent-pid
-  rm -rf $SSH_AUTH_PATH/.ssh-script
+    mkdir -p $SSH_AUTH_PATH
+    rm -rf $SSH_AUTH_SOCK
+    ssh-agent -a $SSH_AUTH_SOCK >| $SSH_AUTH_PATH/.ssh-script
+    source $SSH_AUTH_PATH/.ssh-script
+    echo $SSH_AGENT_PID >| $SSH_AUTH_PATH/.ssh-agent-pid
+    rm -rf $SSH_AUTH_PATH/.ssh-script
+  fi
 fi
 ######################################################################################################
