@@ -12,7 +12,7 @@ if command -v ssh-add >/dev/null 2>&1; then
     mkdir -p $SSH_AUTH_PATH
     rm -rf $SSH_AUTH_SOCK
     ssh-agent -a $SSH_AUTH_SOCK >| $SSH_AUTH_PATH/.ssh-script
-    source $SSH_AUTH_PATH/.ssh-script
+    source $SSH_AUTH_PATH/.ssh-script >/dev/null
     echo $SSH_AGENT_PID >| $SSH_AUTH_PATH/.ssh-agent-pid
     rm -rf $SSH_AUTH_PATH/.ssh-script
   fi
