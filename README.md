@@ -21,7 +21,7 @@ wget -O /usr/local/bin/pscp https://raw.githubusercontent.com/zhubanRuban/cygwin
 chmod +x /usr/local/bin/pscp
 ```
 
-## [Re-use SSH agent](https://github.com/zhubanRuban/cygwin-extras/blob/master/re-use-ssh-agent.sh)
+## [Re-use SSH agent](https://github.com/zhubanRuban/cygwin-extras/blob/master/re-use-ssh-agent)
 
 By default, Cygwin asks for SSH key password on every SSH login
 
@@ -50,6 +50,16 @@ Run `ssh-add`, this will parse existing SSH keys in .ssh folder, if anything fou
 **SSH_AUTH_PATH**
 - a path where SSH agent will store its tmp files, moved to separate folder in $HOME for convenience
 - *default*: ~/.agentssh
+
+**Also see updated version of this tweak below:**
+
+## [SSH agent tweak](https://github.com/zhubanRuban/cygwin-extras/blob/master/ssh-agent-tweak)
+
+A new version of [re-use-ssh-agent](https://github.com/zhubanRuban/cygwin-extras#re-use-ssh-agent)
+
+Based on [auto-launching-ssh-agent-on-msysgit](https://help.github.com/articles/working-with-ssh-key-passphrases/#auto-launching-ssh-agent-on-msysgit)
+
+An attempt to simulate ssh-agent behaviour like on desktop Linux, e.g. SSH key password asked only once upon ssh or scp execution and stored until next reboot. Modified for CygWin+ConEmu portable build: https://github.com/zhubanRuban/ConCygSys
 
 ## [Custom .bashrc](https://github.com/zhubanRuban/cygwin-extras/blob/master/bashrc_custom)
 
