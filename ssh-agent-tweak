@@ -1,0 +1,29 @@
+
+##########################################################################################################
+# A new version of https://github.com/zhubanRuban/cygwin-extras#re-use-ssh-agent                         #
+# Based on                                                                                               #
+# https://help.github.com/articles/working-with-ssh-key-passphrases/#auto-launching-ssh-agent-on-msysgit #
+# An attempt to simulate ssh-agent behaviour like on desktop Linux, e.g.                                 #
+# SSH key password asked only once upon ssh or scp execution and stored until next reboot                #
+# Modified for CygWin+ConEmu portable build: https://github.com/zhubanRuban/ConCygSys                    #
+
+agssh () {
+  mkdir -p ~/.ssh
+  env=~/.ssh/agent.env
+  agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
+  agent_start () {
+    (umask 077; ssh-agent >| "$env")
+    . "$env" >| /dev/null ; }
+  agent_load_env
+  agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+  if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+    agent_start
+    ssh-add
+  elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+    ssh-add
+  fi
+  unset env
+}
+alias ssh='agssh; command ssh'
+alias scp='agssh; command scp'
+##########################################################################################################
