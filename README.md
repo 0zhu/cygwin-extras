@@ -51,6 +51,8 @@ Run `ssh-add`, this will parse existing SSH keys in .ssh folder, if anything fou
 - a path where SSH agent will store its tmp files, moved to separate folder in $HOME for convenience
 - *default*: ~/.agentssh
 
+> **Make sure "Kill ssh-agent with ConEmu" option is switched off in ConEmu settings for better experience**
+
 **Also see updated version of this tweak below:**
 
 ## [SSH agent tweak](https://github.com/zhubanRuban/cygwin-extras/blob/master/ssh-agent-tweak)
@@ -60,6 +62,8 @@ A new version of [re-use-ssh-agent](https://github.com/zhubanRuban/cygwin-extras
 Based on [auto-launching-ssh-agent-on-msysgit](https://help.github.com/articles/working-with-ssh-key-passphrases/#auto-launching-ssh-agent-on-msysgit)
 
 An attempt to simulate ssh-agent behaviour like on desktop Linux, e.g. SSH key password asked only once upon ssh or scp execution and stored until next reboot. Modified for CygWin+ConEmu portable build: https://github.com/zhubanRuban/ConCygSys
+
+> **Make sure "Kill ssh-agent with ConEmu" option is switched off in ConEmu settings for better experience**
 
 ## [Custom .bashrc](https://github.com/zhubanRuban/cygwin-extras/blob/master/bashrc_custom)
 
