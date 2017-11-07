@@ -1,6 +1,14 @@
 # cygwin-extras
 Enhancements for Cygwin-like environments
 
+- [PSSH (ParallelSSH)](#pssh-parallelssh)
+- [PSCP (ParallelSCP)](#pscp-parallelscp)
+- [Re-use SSH agent](#re-use-ssh-agent)
+- [SSH agent tweak](#ssh-agent-tweak)
+- [Custom .bashrc](#custom-bashrc)
+- [Custom .inputrc](#custom-inputrc)
+- [colours](#colours)
+
 ## [PSSH (ParallelSSH)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pssh)
 
 Parallel SSH tool written in bash, specially for CygWin
@@ -61,7 +69,7 @@ A new version of [re-use-ssh-agent](https://github.com/zhubanRuban/cygwin-extras
 
 Based on [auto-launching-ssh-agent-on-msysgit](https://help.github.com/articles/working-with-ssh-key-passphrases/#auto-launching-ssh-agent-on-msysgit)
 
-An attempt to simulate ssh-agent behaviour like on desktop Linux, e.g. SSH key password asked only once upon ssh or scp execution and stored until next reboot. Modified for CygWin+ConEmu portable build: https://github.com/zhubanRuban/ConCygSys
+An attempt to simulate ssh-agent behaviour like on desktop Linux, e.g. SSH key password asked only once upon ssh or scp execution and stored until next reboot. Modified for CygWin+ConEmu portable installer: https://github.com/zhubanRuban/ConCygSys
 
 > **Make sure "Kill ssh-agent with ConEmu" option is switched off in ConEmu settings for better experience**
 
@@ -95,6 +103,6 @@ Can be done in the following way:
 wget -O- https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/inputrc_custom >> /path/to/your/.inputrc
 ```
 
-## colours
+## [colours](https://github.com/zhubanRuban/cygwin-extras/blob/master/colours)
 
 This script shows available colour codes
