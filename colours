@@ -1,0 +1,10 @@
+#!/bin/bash
+# https://github.com/zhubanRuban/cygwin-extras#colours
+
+for i in {30..37} {40..47} {90..97} {100..107}; do
+	for a in {0..9}; do
+		echo -ne "\e[$a;$i""m\\\e[$a;$i""m\e[0m\t"
+		done
+	echo
+done
+echo
