@@ -94,3 +94,7 @@ Can be done in the following way:
 ```
 wget -O- https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/inputrc_custom >> /path/to/your/.inputrc
 ```
+
+## colours
+
+This script shows available colour codes
