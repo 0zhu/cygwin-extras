@@ -26,4 +26,5 @@ agssh () {
 }
 alias ssh='agssh; command ssh'
 alias scp='agssh; command scp'
+alias ssh-add='agssh'
 ##########################################################################################################
