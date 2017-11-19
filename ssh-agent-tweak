@@ -14,12 +14,12 @@ agssh () {
     (umask 077; ssh-agent >| "$env")
     . "$env" >| /dev/null ; }
   agent_load_env
-  agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+  agent_run_state=$(command ssh-add -l >| /dev/null 2>&1; echo $?)
   if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
     agent_start
-    ssh-add
+    command ssh-add
   elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
-    ssh-add
+    command ssh-add
   fi
   unset env
 }
