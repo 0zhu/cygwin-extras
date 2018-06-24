@@ -1,0 +1,14 @@
+############################################################################################
+# As of 2017, whois does not show contact details in the output
+# This funtion allows to return this functionality
+# based on TinyApps_Org's tweak https://www.reddit.com/r/commandline/comments/6taq3k/why_is_whois_showing_no_registrant_information/dptii8b
+cygwhois() {
+  WHOISSERV=$(command whois $* 2>/dev/null | grep  'Registrar WHOIS Server:' | cut -f2- -d:)
+  if [ -z "$WHOISSERV" ]; then
+    command whois $*
+  else
+    command whois -h $WHOISSERV $*
+  fi
+}
+alias whois='cygwhois'
+############################################################################################
