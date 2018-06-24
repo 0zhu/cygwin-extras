@@ -8,6 +8,7 @@ Enhancements for Cygwin-like environments
 - [Custom .bashrc](#custom-bashrc)
 - [Custom .inputrc](#custom-inputrc)
 - [colours](#colours)
+- [whois tweak](#whois-tweak)
 
 ## [PSSH (ParallelSSH)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pssh)
 
@@ -106,3 +107,17 @@ wget -O- https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/inpu
 ## [colours](https://github.com/zhubanRuban/cygwin-extras/blob/master/colours)
 
 This script shows available colour codes
+
+## [whois tweak](https://github.com/zhubanRuban/cygwin-extras/blob/master/whois-tweak)
+
+As of 2017, whois does not show contact details in the output. This funtion allows to return this functionality.
+Based on [TinyApps_Org's tweak](https://www.reddit.com/r/commandline/comments/6taq3k/why_is_whois_showing_no_registrant_information/dptii8b)
+
+### How to use:
+
+Append to your .bashrc
+
+Can be done in the following way:
+```
+wget -O- https://raw.githubusercontent.com/zhubanRuban/cygwin-extras/master/whois-tweak >> /path/to/your/.bashrc
+```
