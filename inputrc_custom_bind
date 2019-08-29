@@ -1,0 +1,9 @@
+
+################################################
+# Ctrl+Left and Ctrl+Right moves cursor by words
+# https://github.com/zhubanRuban/cygwin-extras
+# bind version for bash
+# https://stackoverflow.com/questions/37193546/custom-inputrc-definitions-not-sourcing-correctly
+bind '"\e[1;5C": forward-word'    # ctrl + right
+bind '"\e[1;5D": backward-word'   # ctrl + left
+################################################
