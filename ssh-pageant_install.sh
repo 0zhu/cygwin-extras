@@ -8,4 +8,4 @@ echo eval '$(/usr/bin/ssh-pageant -r -a "$HOME/.ssh/.ssh-pageant")' > $PATHTOINS
 
 # remove previous possible implementations
 rm -f /opt/ssh-agent-tweak
-sed -i '/\/opt\/ssh-agent-tweak/d' ~/.bashrc"
+sed -i '/\/opt\/ssh-agent-tweak/d' ~/.bashrc
