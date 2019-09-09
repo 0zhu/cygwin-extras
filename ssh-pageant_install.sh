@@ -1,7 +1,8 @@
 #!/bin/bash
 PATH=/usr/local/bin:/usr/bin
 
-command -v ssh >/dev/null 2>&1 || { echo ssh is not installed, ssh-pageant implementation is not required; exit 1; }
+command -v ssh >/dev/null 2>&1 || { echo SSH is not installed, ssh-pageant implementation is not required; exit 1; }
+command -v ssh-pageant >/dev/null 2>&1 || { echo SSH-pageant is already installed; exit 1; }
 
 echo Installing ssh-pageant https://github.com/cuviper/ssh-pageant
 apt-cyg install ssh-pageant
