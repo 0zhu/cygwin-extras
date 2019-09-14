@@ -52,7 +52,7 @@ wget -O /etc/profile.d/ssh-agent-tweak.sh https://github.com/zhubanRuban/cygwin-
 - [SSH key management and ssh-agent setup](https://komyounity.com/upravlenie-kluchami-ssh-i-nastroyka-ssh-agent/)
 
 
-## [Custom .inputrc](https://github.com/zhubanRuban/cygwin-extras/blob/master/inputrc_custom)
+## [Custom .inputrc](https://github.com/zhubanRuban/cygwin-extras/blob/master/inputrc-custom)
 
 Makes Ctrl+Left and Ctrl+Right move cursor by words in local console (like in Linux systems)
 
