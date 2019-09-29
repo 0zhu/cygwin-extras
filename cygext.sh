@@ -1,0 +1,163 @@
+#!/bin/bash
+
+#   Copyright 2019 zhubanRuban https://github.com/zhubanRuban/
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+COMPRESS=
+
+helpf() {
+echo "
+Usage: $SCRIPT \"package1 package2 ...\" packagename OPTION
+Options:
+	--standalone
+	--nodependencies
+	--mxt
+	--cygutils
+"
+exit 0
+}
+
+SCRIPT=$0
+ARGS=$@
+
+grep -q -- --help <<< "$ARGS" && helpf
+[ -z "$1" ] && helpf
+
+[ -z ${MOBASTARTUPDIR+x} ] || {
+	echo DON\'T run this script from Mobaxterm, use Cygwin instead:
+	echo https://github.com/zhubanRuban/cygwin-portable
+	exit 1
+}
+
+echo; echo Checking if required packages exist...
+command -v wget || { echo wget does not exist, exiting; exit 1; }
+command -v apt-cyg || { echo apt-cyg does not exist, exiting; exit 1; }
+command -v zip || apt-cyg install zip
+command -v unzip || apt-cyg install unzip
+command -v dos2unix || apt-cyg install unzip
+[ -z ${MOBASTARTUPDIR+x} ] || { echo Dont run this script from Mobaxterm, use Cygwin instead; exit 1; }
+
+[[ $1 != --* ]] && PACKAGES=$1
+[[ $2 != --* ]] && PACKNAME=$2
+
+[ -z "${PACKNAME:-}" ] && {
+	grep -q -- --mxt <<< "$ARGS" && PACKNAME=${PACKAGES/ /}.mxt3 || PACKNAME=${PACKAGES/ /}.zip
+}
+
+mxtf() {
+
+grep -q -- --mxt <<< "$ARGS" || return
+[ -z "$PACKAGES" ] || grep -q -- --cygutils <<< "$ARGS" || return
+
+PLUGINFILE=CygUtils.plugin
+echo; wget -O $PLUGINFILE https://mobaxterm.mobatek.net/$PLUGINFILE
+PACKNAME=$PLUGINFILE
+
+grep -q -- --cygutils <<< "$ARGS" && return
+
+# Check installed packages in mxt:
+# apt-cyg update && cat /etc/setup/*installed*|awk '{print $1}'
+#
+# As of Sep 2019:
+# base-files base-files-4.2-2.tar.bz2 0
+# bash bash-4.1.16-4.tar.bz2 0
+# cygwin cygwin-1.7.34-6.tar.bz2 0
+# openssh openssh-6.7.1p1-1.tar.bz2 0
+# xorg-server xorg-server-1.16.3-1.tar.bz2 0
+# grep grep-2.16-1.tar.bz2 0
+#
+# IF this changes, do not forget to update explusions in dependencies section:
+# apt-cyg update && cat /etc/setup/*installed*|awk '{print $1}'|sed 's/^/\^/g; s/$/\$/g'|sed ':a;N;$!ba;s/\n/|/g'
+# ^base-files$|^bash$|^cygwin$|^openssh$|^xorg-server$|^grep$
+
+echo; echo Gathering package information...
+echo -e Legend: "\e[0;31mnotfound\e[0m \e[0;32mfound\e[0m localpackage \e[4;40mrepopackage\e[0m"
+for FILE in $(unzip -Z1 $PLUGINFILE|grep ^bin/|sort|uniq|sed '/^bin\/$/d; s/^/\//g'); do
+	FOUNDPKGS=
+	FOUNDPKG=
+	FOUNDREPOPKG=
+	FOUNDPKG=$(cygcheck -f $FILE|awk -F'-[0-9].[0-9]' '{print $1}'|sed '/-debug/d'|uniq)
+	if [ -z "$FOUNDPKG" ]; then
+		FOUNDREPOPKG=$(cygcheck -p ${FILE}$|awk -F ' - |:' '{print $2}'|sed '/-debug/d'|uniq)
+		[ -z "$FOUNDREPOPKG" ] || {
+			ALLFOUNDREPOPKG="$ALLFOUNDREPOPKG
+$FOUNDREPOPKG"
+			FOUNDPKGS="$FOUNDREPOPKG"
+		}
+	else
+		FOUNDPKGS="$FOUNDPKG"
+	fi
+	if [ -z "$FOUNDPKGS" ]; then
+		echo -e "\e[0;31m$FILE\e[0m"
+	else
+		ALLFOUNDPKGS="$ALLFOUNDPKGS
+$FOUNDPKGS"
+		echo -e "\e[0;32m"$FILE"\e[0m" "\e[4;40m"$FOUNDREPOPKG"\e[0m" $FOUNDPKG
+	fi
+done
+
+[ -z "$ALLFOUNDREPOPKG" ] || echo -e "\n"Packages found in Cygwin repo: $(sort <<< "$ALLFOUNDREPOPKG"|uniq)
+[ -z "$ALLFOUNDPKGS" ] || {
+	echo; echo All packages found: $(sort <<< "$ALLFOUNDPKGS"|uniq)
+	echo; echo Cygwin setup format: $(sort <<< "$ALLFOUNDPKGS"|uniq|sed ':a;N;$!ba;s/\n/,/g')
+}
+
+rm -f $PLUGINFILE
+exit
+}
+
+standalonef() {
+[ -z "$PACKAGES" ] && return
+grep -q -- --standalone <<< "$ARGS" || return
+echo =========STANDALONE==========
+if grep -q -- --mxt <<< "$ARGS"; then
+	zip $COMPRESS -u "$PACKNAME" $(cygpath -u $(cygcheck $PACKAGES 2>/dev/null|grep -Evi '^Found: |\\WINDOWS\\|cygwin1.dll'|sed 's/>- //g')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+else
+	zip $COMPRESS -u "$PACKNAME" $(cygpath -u $(cygcheck $PACKAGES 2>/dev/null|grep -Evi '^Found: |\\WINDOWS\\'|sed 's/>- //g')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+fi
+}
+
+packagef() {
+[ -z "$PACKAGES" ] && return
+echo ===========PACKAGE===========
+apt-cyg install $PACKAGES
+zip $COMPRESS -u "$PACKNAME" $(cygcheck -l $PACKAGES|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+}
+
+dependenciesf() {
+[ -z "$PACKAGES" ] && return
+echo =========DEPENDENCIES========
+if grep -q -- --nodependencies <<< "$ARGS"; then
+	echo; echo Dependencies for: $PACKAGES
+	if grep -q -- --mxt <<< "$ARGS"; then
+		apt-cyg depends $PACKAGES|sed 's/ > /\n/g'|sort|uniq|grep -Evi "$(sed 's/^/\^/; s/ /\$|\^/g; s/$/\$/' <<< "$PACKAGES")"|grep -Evi '^base-files$|^bash$|^cygwin$|^openssh$|^xorg-server$|^grep$'
+	else
+		apt-cyg depends $PACKAGES|sed 's/ > /\n/g'|sort|uniq|grep -Evi "$(sed 's/^/\^/; s/ /\$|\^/g; s/$/\$/' <<< "$PACKAGES")"
+	fi
+else
+	if grep -q -- --mxt <<< "$ARGS"; then
+		zip $COMPRESS -u "$PACKNAME" $(cygcheck -l $(apt-cyg depends $PACKAGES|sed 's/ > /\n/g'|sort|uniq|grep -Evi "$(sed 's/^/\^/; s/ /\$|\^/g; s/$/\$/' <<< "$PACKAGES")"|grep -Evi '^base-files$|^bash$|^cygwin$|^openssh$|^xorg-server$|^grep$')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+	else
+		zip $COMPRESS -u "$PACKNAME" $(cygcheck -l $(apt-cyg depends $PACKAGES|sed 's/ > /\n/g'|sort|uniq|grep -Evi "$(sed 's/^/\^/; s/ /\$|\^/g; s/$/\$/' <<< "$PACKAGES")")|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+	fi
+fi
+}
+
+mxtf
+standalonef
+packagef
+dependenciesf
+
+echo; echo All threads completed.
+du -sh "$PACKNAME"{,.zip,.mxt3} 2>/dev/null
