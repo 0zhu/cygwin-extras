@@ -15,6 +15,7 @@
 #   limitations under the License.
 
 COMPRESS=
+UPDATE=
 
 helpf() {
 echo "
@@ -45,7 +46,7 @@ command -v wget || { echo wget does not exist, exiting; exit 1; }
 command -v apt-cyg || { echo apt-cyg does not exist, exiting; exit 1; }
 command -v zip || apt-cyg install zip
 command -v unzip || apt-cyg install unzip
-command -v dos2unix || apt-cyg install unzip
+command -v dos2unix || apt-cyg install dos2unix
 [ -z ${MOBASTARTUPDIR+x} ] || { echo Dont run this script from Mobaxterm, use Cygwin instead; exit 1; }
 
 [[ $1 != --* ]] && PACKAGES=$1
@@ -122,9 +123,9 @@ standalonef() {
 grep -q -- --standalone <<< "$ARGS" || return
 echo =========STANDALONE==========
 if grep -q -- --mxt <<< "$ARGS"; then
-	zip $COMPRESS -u "$PACKNAME" $(cygpath -u $(cygcheck $PACKAGES 2>/dev/null|grep -Evi '^Found: |\\WINDOWS\\|cygwin1.dll'|sed 's/>- //g')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+	zip $COMPRESS $UPDATE "$PACKNAME" $(cygpath -u $(cygcheck $PACKAGES 2>/dev/null|grep -Evi '^Found: |\\WINDOWS\\|cygwin1.dll'|sed 's/>- //g')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
 else
-	zip $COMPRESS -u "$PACKNAME" $(cygpath -u $(cygcheck $PACKAGES 2>/dev/null|grep -Evi '^Found: |\\WINDOWS\\'|sed 's/>- //g')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+	zip $COMPRESS $UPDATE "$PACKNAME" $(cygpath -u $(cygcheck $PACKAGES 2>/dev/null|grep -Evi '^Found: |\\WINDOWS\\'|sed 's/>- //g')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
 fi
 }
 
@@ -132,7 +133,7 @@ packagef() {
 [ -z "$PACKAGES" ] && return
 echo ===========PACKAGE===========
 apt-cyg install $PACKAGES
-zip $COMPRESS -u "$PACKNAME" $(cygcheck -l $PACKAGES|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+zip $COMPRESS $UPDATE "$PACKNAME" $(cygcheck -l $PACKAGES|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
 }
 
 dependenciesf() {
@@ -147,9 +148,9 @@ if grep -q -- --nodependencies <<< "$ARGS"; then
 	fi
 else
 	if grep -q -- --mxt <<< "$ARGS"; then
-		zip $COMPRESS -u "$PACKNAME" $(cygcheck -l $(apt-cyg depends $PACKAGES|sed 's/ > /\n/g'|sort|uniq|grep -Evi "$(sed 's/^/\^/; s/ /\$|\^/g; s/$/\$/' <<< "$PACKAGES")"|grep -Evi '^base-files$|^bash$|^cygwin$|^openssh$|^xorg-server$|^grep$')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+		zip $COMPRESS $UPDATE "$PACKNAME" $(cygcheck -l $(apt-cyg depends $PACKAGES|sed 's/ > /\n/g'|sort|uniq|grep -Evi "$(sed 's/^/\^/; s/ /\$|\^/g; s/$/\$/' <<< "$PACKAGES")"|grep -Evi '^base-files$|^bash$|^cygwin$|^openssh$|^xorg-server$|^grep$')|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
 	else
-		zip $COMPRESS -u "$PACKNAME" $(cygcheck -l $(apt-cyg depends $PACKAGES|sed 's/ > /\n/g'|sort|uniq|grep -Evi "$(sed 's/^/\^/; s/ /\$|\^/g; s/$/\$/' <<< "$PACKAGES")")|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
+		zip $COMPRESS $UPDATE "$PACKNAME" $(cygcheck -l $(apt-cyg depends $PACKAGES|sed 's/ > /\n/g'|sort|uniq|grep -Evi "$(sed 's/^/\^/; s/ /\$|\^/g; s/$/\$/' <<< "$PACKAGES")")|sed 's/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g')
 	fi
 fi
 }
