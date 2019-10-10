@@ -35,11 +35,11 @@ ARGS=$@
 grep -q -- --help <<< "$ARGS" && helpf
 [ -z "$1" ] && helpf
 
-[ -z ${MOBASTARTUPDIR+x} ] || {
-	echo DON\'T run this script from Mobaxterm, use Cygwin instead:
-	echo https://github.com/zhubanRuban/cygwin-portable
-	exit 1
-}
+#[ -z ${MOBASTARTUPDIR+x} ] || {
+#	echo DON\'T run this script from Mobaxterm, use Cygwin instead:
+#	echo https://github.com/zhubanRuban/cygwin-portable
+#	exit 1
+#}
 
 echo; echo Checking if required packages exist...
 command -v wget || { echo wget does not exist, exiting; exit 1; }
@@ -47,13 +47,67 @@ command -v apt-cyg || { echo apt-cyg does not exist, exiting; exit 1; }
 command -v zip || apt-cyg install zip
 command -v unzip || apt-cyg install unzip
 command -v dos2unix || apt-cyg install dos2unix
-[ -z ${MOBASTARTUPDIR+x} ] || { echo Dont run this script from Mobaxterm, use Cygwin instead; exit 1; }
 
 [[ $1 != --* ]] && PACKAGES=$1
 [[ $2 != --* ]] && PACKNAME=$2
 
 [ -z "${PACKNAME:-}" ] && {
-	grep -q -- --mxt <<< "$ARGS" && PACKNAME=${PACKAGES/ /}.mxt3 || PACKNAME=${PACKAGES/ /}.zip
+	grep -q -- --mxt <<< "$ARGS" && PACKNAME=${PACKAGES/ /}.mxt3 || {
+		[ -z ${MOBASTARTUPDIR+x} ] && PACKNAME=${PACKAGES/ /}.zip || PACKNAME=${PACKAGES/ /}.mxt3
+	}
+}
+
+mxtext() {
+[ -z ${MOBASTARTUPDIR+x} ] && return
+
+apt-cyg update
+
+SETUPINI="$HOME/.aptcyg/setup.ini"
+CYGSETUP="$(pwd)/mxtext-setup.ini.cygwin"
+
+function getcygsetup {
+	wget -O "${CYGSETUP}.xz" $(grep ' Mirror' "$SETUPINI"|head -n1|cut -d\| -f2)/$(uname -m|sed 's/i686/x86/g')/setup.xz
+	unxz "${CYGSETUP}.xz" -c > "$CYGSETUP"
+}
+
+function depends {
+	for PKG in "$@"; do echo -n .
+		grep -q "^$PKG$" <<< "$DEPS" && continue || DEPS="$DEPS"$'\n'"$PKG"
+		depends $(sed -n "/^@ $PKG$/,/^@/p" "$CYGSETUP"|grep ^requires:|awk -F': ' '{print $2}')
+	done
+}
+
+function installf {
+	for PKG in "$@"; do
+		apt-cyg install "$PKG" || {
+			sed -n "/^@ $PKG$/,/^@/p" "$CYGSETUP" | head -n -2 | sed '/\[prev\]/,/^$/d' | grep -E '^@|^sdesc:|^requires:|^version:|^install:' | sed 's/^[^:]*: //' | sed 's/"//g' | sed "\$acmd:  " >> "$SETUPINI"
+			apt-cyg install "$PKG"
+		}
+	done
+}
+
+function listfiles {
+	for PKG in "$@"; do
+		for ARCHIVE in $(grep "^$PKG " /etc/setup/installed.db|awk '{print $2}'); do
+			gzip -cd /etc/setup/${ARCHIVE}.lst.gz | grep -v /$ | sed 's/^/\//g; s/\/usr\/bin\//\/bin\//g; s/\/usr\/lib\//\/lib\//g'
+		done
+	done
+}
+
+getcygsetup
+grep -q -- --nodependencies <<< "$ARGS" && {
+	installf $PACKAGES
+	zip $COMPRESS $UPDATE "$PACKNAME" $(listfiles $PACKAGES)
+} || {
+	echo -n Parsing dependencies; depends $PACKAGES; echo
+	installf $DEPS
+	zip $COMPRESS $UPDATE "$PACKNAME" $(listfiles $DEPS)
+}
+
+rm -f "$(pwd)/mxtext-"*
+rm -rf "$HOME/.aptcyg"
+completedf
+exit
 }
 
 mxtf() {
@@ -155,10 +209,14 @@ else
 fi
 }
 
+function completedf {
+echo; echo All threads completed.
+du -sh "$PACKNAME"{,.zip,.mxt3} 2>/dev/null
+}
+
+mxtext
 mxtf
 standalonef
 packagef
 dependenciesf
-
-echo; echo All threads completed.
-du -sh "$PACKNAME"{,.zip,.mxt3} 2>/dev/null
+completedf
