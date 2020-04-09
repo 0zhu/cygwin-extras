@@ -2,9 +2,9 @@
 Enhancements / addons for Cygwin-like environments
 
 
-## [PSSH (ParallelSSH)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pssh)
+## [PSSH (ParallelSSH alternative written in Bash)](https://github.com/zhubanRuban/cygwin-extras/blob/master/pssh)
 
-Parallel SSH tool written in bash, specially for CygWin
+Specially for CygWin. The script does ssh calls in serial emulating PSSH functionality.
 
 ### Installation
 ```
